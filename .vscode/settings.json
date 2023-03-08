@@ -37,6 +37,8 @@
     "libft.h": "c",
     "pipex.h": "c",
     "limits.h": "c",
-    "unistd.h": "c"
+    "unistd.h": "c",
+    "fcntl.h": "c",
+    "stdlib.h": "c"
   }
 }

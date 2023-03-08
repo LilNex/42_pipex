@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/06 19:16:12 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/08 01:53:15 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ void parse_args(t_piputils *utils, int ac, char **av)
         infile = av[1];
         // utils->infile = rea
         outfile = av[ac - 1];
-        printf("infile : %s\n", infile);
-        printf("outfile : %s\n", outfile);
+        utils->input_data = read_file(infile);
+
+        printf("infile : %s\n", utils->input_data);
+        printf("outfile : %s\n", get_fullpath(utils, "ls"));
     }
     
 }

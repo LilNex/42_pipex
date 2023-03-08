@@ -9,7 +9,6 @@ int ft_exit(char *s)
 	exit(0);
 }
 
-
 void pPath(void *c)
 {
 	char *s;
