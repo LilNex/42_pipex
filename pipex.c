@@ -28,9 +28,10 @@ int main(int ac, char **av, char **envp)
 	int count;
 	// t_list *list;
 	utils = (t_piputils *) ft_calloc(1,sizeof(t_piputils));
+	utils->envp = envp;
 	count = 0;
-	// if (ac >= 5 )
-	// {
+	if (ac >= 5 )
+	{
 
 		
 	// 	// printf("tt\n"); 
@@ -45,11 +46,12 @@ int main(int ac, char **av, char **envp)
 	// {
 		parsePath(envp,utils);
 		parse_args(utils, ac, av);
-
+		if (utils->commands)
+			execute_commands(utils);
 	// ft_lstiter(utils->paths,pPath);
 	
 	// 	printf("%s\n",*envp++);
-	// }
+	}
 	
 
 	return 0;

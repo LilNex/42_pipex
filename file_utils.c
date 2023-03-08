@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:15 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/08 01:54:31 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/08 21:28:29 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,19 @@ char *get_fullpath(t_piputils *u, char *command)
     tmp = ft_strjoin(paths->content, "/");
     fullpath = ft_strjoin(tmp, command);
     free(tmp);
-    while ((access(fullpath,X_OK) != 0) || 
-        ((access(fullpath,X_OK) != 0) && paths->next))
+    // printf("access for file '%s' : %d\n",fullpath,access(fullpath,X_OK));
+    while (
+        ((access(fullpath,X_OK) < 0) && paths->next))
     {
+        free(fullpath);
+        // printf("access for file '%s' : %d\n",fullpath,access(fullpath,X_OK));
         paths = paths->next;
         tmp = ft_strjoin(paths->content, "/");
         fullpath = ft_strjoin(tmp, command);
         free(tmp);
     }
-    return fullpath;
+    if ((access(fullpath,X_OK) >= 0)) 
+        return (fullpath);
+    else 
+        return (NULL);
 }

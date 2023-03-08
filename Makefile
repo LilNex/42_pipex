@@ -4,6 +4,7 @@ HDRS = pipex.h
 SOURCES = pipex.c
 LIB= libft/
 GNL= gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c
+SRC = pipex.c utils.c file_utils.c parse_utils.c
 	
 
 OBJECTS = $(SOURCES:.c=.o)
@@ -17,7 +18,7 @@ all: build $(NAME)
 build:
 	cd $(LIB) && make bonus
 	cp $(LIB)libft.a .
-	gcc pipex.c utils.c file_utils.c $(GNL) libft.a $(CFLAGS)
+	gcc $(SRC) $(GNL) libft.a $(CFLAGS)
 	clear
 
 
