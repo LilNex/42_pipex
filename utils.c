@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/08 01:53:15 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/09 00:56:00 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void parsePath(char **env, t_piputils *utils)
     {
         if(!ft_strncmp(*env,"PATH=",5))
         {
-            // printf("%s\n",*env+ 5);
-            ft_strlcpy(tmp = ft_calloc(ft_strlen(*env+5),sizeof(char)), (*env)+ 5, ft_strlen(*env+5));
+            ft_strlcpy(tmp = ft_calloc(ft_strlen(*env + 5),sizeof(char)),
+                (*env)+ 5, ft_strlen(*env+5));
             // printf("tmp : %s\n",tmp);
             paths = ft_split(tmp,':');
             while (*paths)
@@ -41,23 +41,30 @@ void parsePath(char **env, t_piputils *utils)
     
 }
 
-void parse_args(t_piputils *utils, int ac, char **av)
+void execute_commands(t_piputils *u)
 {
-    // int c = 0;
-    char *infile;
-    char *outfile;
-    utils->cmds = ft_calloc(ac - 3, sizeof(char));
-    if (ac >= 5 )
-    {
-        infile = av[1];
-        // utils->infile = rea
-        outfile = av[ac - 1];
-        utils->input_data = read_file(infile);
+    int count;
+    t_list *node;
+    t_command *cmd;
+    int pid;
 
-        printf("infile : %s\n", utils->input_data);
-        printf("outfile : %s\n", get_fullpath(utils, "ls"));
+    count = 0;
+    node = u->commands;
+    while (node && node->content)
+    {
+        printf("count : %d\n",count++);
+        cmd = (t_command *)node->content;
+        pid = fork();
+        if (pid == 0)
+        {
+            execve(cmd->fullpath, cmd->args, u->envp);
+        }
+        else
+            waitpid(pid, NULL, 0);
+        unlink()
+        node = node->next;
+        printf("node : %p\n", node);
     }
+
     
 }
-
-
