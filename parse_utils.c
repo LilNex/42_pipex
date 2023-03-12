@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 21:30:06 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/08 23:47:28 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/12 18:01:57 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void parse_commands(t_piputils *u, int ac, char **av)
     int i;
     t_command *cmd;
     char *tmp;
+    // char *fullcmd;
 
     i = 2;
     (void)u;
@@ -42,7 +43,8 @@ void parse_commands(t_piputils *u, int ac, char **av)
             tmp = ft_strdup(av[i] + 1 + ft_strlen(cmd->cmd));
         else
             tmp = ft_strdup("");
-        cmd->args = ft_split(tmp, ' ');
+        cmd->args = ft_split(av[i], ' ');
+        // printf("arg : %s\n",tmp);
         // cmd->args = tmp;
         
         // printf("cmd : %s | path : %s\n",cmd->cmd,cmd->fullpath);
@@ -69,19 +71,17 @@ void print_cmds(t_command *u)
 
 void parse_args(t_piputils *utils, int ac, char **av)
 {
-    char *infile;
-    char *outfile;
     utils->cmds = ft_calloc(ac - 3, sizeof(char));
     if (ac >= 5 )
     {
-        infile = av[1];
-        outfile = av[ac - 1];
-        utils->input_data = read_file(infile);
+        utils->infile = av[1];
+        utils->outfile = av[ac - 1];
+        utils->input_data = read_file(utils->infile);
 
-        printf("infile : %s\n", utils->input_data);
+        // printf("infile : %s\n", utils->input_data);
         parse_commands(utils, ac, av);
-        printf("outfile : %s\n", get_fullpath(utils, "rar"));
-        puts("\n");
+        // printf("outfile : %s\n", get_fullpath(utils, "rar"));
+        // puts("\n");
         // ft_lstiter(utils->commands, (void *)print_cmds);
     }
     
