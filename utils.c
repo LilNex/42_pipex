@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/12 18:17:33 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/14 00:09:08 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,33 +62,29 @@ void execute_commands(t_piputils *u)
 
     while (node && node->content)
     {
-        printf("count : %d\n", count++);
+        printf("count : %d first : %d\n", count++, first);
         cmd = (t_command *)node->content;
 
-        // int fd = -1;
-        // if(pipe(newfd) == -1)
-        //     printf("pipe error\n");
-        // dup2(newfd[1], STDOUT_FILENO);
-        // write(newfd[1], "hello\n\n", 7);
-        // fd = dup(STDOUT_FILENO);
+        if (pipe(newfd))
+            printf("pipe error\n");
         
         pid = fork();
         if (pid == 0)
         {
             if (first)
             {
-            //     // close(STDIN_FILENO);
                 dup2(inputfd, STDIN_FILENO);
+                // close(newfd[0]);
+                // close(newfd[1]);
             }
             else
-                // dup2(newfd[1], newfd[0]);
-                dup2(newfd[0], newfd[1]);
-
-            dup2(newfd[1], STDOUT_FILENO);
-            // dup2(newfd[0], STDIN_FILENO);
+            {
+                dup2(inputfd, STDIN_FILENO);
+                // close(newfd[0]);
+                // close(newfd[1]);
+            }
+            dup2(newfd[1] , STDOUT_FILENO);
             execve(cmd->fullpath, cmd->args, u->envp);
-            
-            // dup2(STDI)
         }
         else
         {
@@ -96,22 +92,18 @@ void execute_commands(t_piputils *u)
             if(first)
             {
                 first = 0;
-                // close(STDIN_FILENO);
                 close(inputfd);
             }
+            close(newfd[1]);
+            inputfd = newfd[0];
             waitpid(pid, NULL, 0);
-            // close(newfd[1]);
-            content = ft_calloc(10000, sizeof(char));
-            // read(newfd[0], content, 10000);
-            // printf("content : %s\n", content);
+
         }
-        
-        // dup2(newfd[1], STDOUT_FILENO);
-        
-        
         printf("node : %p\n", node);
         node = node->next;
     }
-
+    content = ft_calloc(10000, sizeof(char));
+    read(newfd[0], content, 10000);
+    printf("content : %s\n", content);
     
 }
