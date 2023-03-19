@@ -3,7 +3,7 @@
 #include "pipex.h"
 
 
-int ft_exit(char *s)
+int ft_error(char *s)
 {
 	ft_putstr_fd(s, STDOUT_FILENO);
 	exit(0);
@@ -30,9 +30,8 @@ int main(int ac, char **av, char **envp)
 	utils = (t_piputils *) ft_calloc(1,sizeof(t_piputils));
 	utils->envp = envp;
 	count = 0;
-	if (ac >= 5 )
+	if (ac >= 5)
 	{
-
 		
 	// 	// printf("tt\n"); 
 	// 	while (av[count]) 
@@ -44,7 +43,8 @@ int main(int ac, char **av, char **envp)
 	// }
 	// while (*envp)
 	// {
-		parsePath(envp,utils);
+		// printf("name : %s", av[ac -1]);
+		parsePath(envp, utils);
 		parse_args(utils, ac, av);
 		if (utils->commands)
 			execute_commands(utils);
@@ -52,7 +52,7 @@ int main(int ac, char **av, char **envp)
 	
 	// 	printf("%s\n",*envp++);
 	}
-	
+
 
 	return 0;
 }

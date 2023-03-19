@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/14 00:09:08 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/19 19:02:52 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,96 +14,90 @@
 
 #include "pipex.h"
 
-
-void pushPath(char *path, t_piputils *utils){
-    // utils->paths;
-    ft_lstadd_front(&(utils->paths),ft_lstnew(path));
+int ft_exit(char *str)
+{
+	ft_putstr_fd(str, STDERR_FILENO);
+	exit(0);
 }
 
-void parsePath(char **env, t_piputils *utils)
+void	pushPath(char *path, t_piputils *utils)
 {
-    char *tmp;
-    char **paths = NULL;
-    while (*env)
-    {
-        if(!ft_strncmp(*env,"PATH=",5))
-        {
-            ft_strlcpy(tmp = ft_calloc(ft_strlen(*env + 5), sizeof(char)),
-                (*env)+ 5, ft_strlen(*env+5));
-            // printf("tmp : %s\n",tmp);
-            paths = ft_split(tmp,':');
-            while (*paths)
-               pushPath(*paths++,utils);
-            // return ;
-        }
-        env++;
-    }
-    
+	ft_lstadd_front(&(utils->paths), ft_lstnew(path));
 }
 
-void execute_commands(t_piputils *u)
+void	parsePath(char **env, t_piputils *utils)
 {
-    int count;
-    t_list *node;
-    t_command *cmd;
-    int pid;
-    char *content = NULL;
-    int inputfd;
-    count = 0;
-    content = ft_calloc(10000, sizeof(char));
-    node = u->commands;
-    int newfd[2];
-    if (pipe(newfd))
-        printf("pipe error\n");
-    inputfd = open(u->infile, O_RDWR);
-    // dup2(newfd[1], inputfd);
-    // int fd = dup(inputfd);
-    int first = 1;
+	char *tmp;
+	char **paths = NULL;
+	while (*env)
+	{
+		if(!ft_strncmp(*env,"PATH=",5))
+		{
+			ft_strlcpy(tmp = ft_calloc(ft_strlen(*env + 5), sizeof(char)),
+				(*env)+ 5, ft_strlen(*env+5));
+			paths = ft_split(tmp,':');
+			while (*paths)
+			   pushPath(*paths++,utils);
+			}
+		env++;
+	}
+	
+}
 
-    while (node && node->content)
-    {
-        printf("count : %d first : %d\n", count++, first);
-        cmd = (t_command *)node->content;
+void exec_cmd(int inputfd, t_list *node, int *first,t_piputils *u, int *newfd)
+{
+	int			pid;
+	t_command	*cmd;
 
-        if (pipe(newfd))
-            printf("pipe error\n");
-        
-        pid = fork();
-        if (pid == 0)
-        {
-            if (first)
-            {
-                dup2(inputfd, STDIN_FILENO);
-                // close(newfd[0]);
-                // close(newfd[1]);
-            }
-            else
-            {
-                dup2(inputfd, STDIN_FILENO);
-                // close(newfd[0]);
-                // close(newfd[1]);
-            }
-            dup2(newfd[1] , STDOUT_FILENO);
-            execve(cmd->fullpath, cmd->args, u->envp);
-        }
-        else
-        {
+	cmd = (t_command *)node->content;
+	if (pipe(*newfd))
+		ft_error("pipe error\n");
 
-            if(first)
-            {
-                first = 0;
-                close(inputfd);
-            }
-            close(newfd[1]);
-            inputfd = newfd[0];
-            waitpid(pid, NULL, 0);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (*first)
+			dup2(inputfd, STDIN_FILENO);
+		else
+			dup2(inputfd, STDIN_FILENO);
+		if (node->next)
+			dup2(newfd[1], STDOUT_FILENO);
+		else
+			dup2(u->outfilefd, STDOUT_FILENO);
+		execve(cmd->fullpath, cmd->args, u->envp);
+	}
+	else
+	{
 
-        }
-        printf("node : %p\n", node);
-        node = node->next;
-    }
-    content = ft_calloc(10000, sizeof(char));
-    read(newfd[0], content, 10000);
-    printf("content : %s\n", content);
-    
+		if (first)
+		{
+			first = 0;
+			close(inputfd);
+		}
+		close(newfd[1]);
+		inputfd = newfd[0];
+		waitpid(pid, NULL, 0);
+
+	}
+	node = node->next;
+}
+
+void	execute_commands(t_piputils *u)
+{
+	t_list		*node;
+	int			inputfd;
+	int			newfd[2];
+	int			first;
+
+	first = 1;
+	node = u->commands;
+	if (pipe(newfd))
+		printf("pipe error\n");
+
+	inputfd = u->infilefd;
+
+	while (node && node->content)
+	{
+		exec_cmd(&inputfd, node, &first, u, newfd);
+	}
 }

@@ -1,5 +1,5 @@
 
-NAME = pipex.out
+NAME = pipex
 HDRS = pipex.h
 SOURCES = pipex.c
 LIB= libft/
@@ -18,7 +18,7 @@ all: build $(NAME)
 build:
 	cd $(LIB) && make bonus
 	cp $(LIB)libft.a .
-	gcc $(SRC) $(GNL) libft.a $(CFLAGS)
+	gcc $(SRC) $(GNL) libft.a $(CFLAGS) -o $(NAME)
 	clear
 
 
