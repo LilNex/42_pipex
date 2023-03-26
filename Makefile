@@ -15,11 +15,11 @@ CFLAGS += -Wall -Wextra -Werror
 all: $(NAME) pipex.h
 
 $(LIB):
-	make -C libft
+	make -C libft 
 	make clean
 
 $(NAME) : $(OBJECTS) $(LIB)
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ 
 
 
 # build: pipex.h
@@ -29,7 +29,7 @@ $(NAME) : $(OBJECTS) $(LIB)
 # 	# clear
 
 %.o: %.c $(LIB)
-	$(CC) -c $< -o $@ $(CFLAGS)
+	$(CC) -c $< -o $@ $(CFLAGS) 
 
 
 clean:

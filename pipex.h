@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 15:49:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/23 22:13:10 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/26 16:41:59 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_piputils
 	char			*outfile;
 	int				infilefd;
 	int				outfilefd;
-	char			**cmds;
 	char			**envp;
 	int				*newfd;
 }					t_piputils;
