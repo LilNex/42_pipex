@@ -2,41 +2,35 @@
 NAME = pipex
 HDRS = pipex.h
 SOURCES = pipex.c
-LIB= libft/
+LIB= libft/libft.a
 GNL= gnl/get_next_line_bonus.c gnl/get_next_line_utils_bonus.c
-SRC = pipex.c utils.c file_utils.c parse_utils.c
+SRC =utils.c file_utils.c parse_utils.c pipex.c 
 	
 
-OBJECTS = $(SOURCES:.c=.o)
+OBJECTS = $(SRC:.c=.o)
 
 CC = cc
 CFLAGS += -Wall -Wextra -Werror
 
-all: build $(NAME)
+all: $(NAME) pipex.h
+
+$(LIB):
+	make -C libft
+	make clean
+
+$(NAME) : $(OBJECTS) $(LIB)
+	$(CC) $(CFLAGS) $^ -o $@
 
 
-build:
-	cd $(LIB) && make bonus
-	cp $(LIB)libft.a .
-	gcc $(SRC) $(GNL) libft.a $(CFLAGS) -o $(NAME)
-	clear
+# build: pipex.h
+# 	cd $(LIB) && make bonus
+# 	cp $(LIB)libft.a .
+# 	gcc $(SRC) $(GNL) libft.a $(CFLAGS) -o $(NAME)
+# 	# clear
 
+%.o: %.c $(LIB)
+	$(CC) -c $< -o $@ $(CFLAGS)
 
-
-run: build 
-	clear
-	./a.out
-
-debug: 
-	echo "Debbugging mode ..."
-	sleep 1
-	run
-	sleep 3
-	clear
-	debug
-
-# %.o: %.c $(HDRS)
-# 	$(CC) -c  $(CFLAGS) $<
 
 clean:
 	rm -f $(OBJECTS) $(BOBJECTS)

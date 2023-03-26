@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 21:30:06 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/19 19:04:14 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/26 01:17:39 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,35 @@ char	*first_word(char *str)
 	return (word);
 }
 
+char	*get_fullpath(t_piputils *u, char *command)
+{
+	t_list	*paths;
+	char	*tmp;
+	char	*fullpath;
+
+	paths = u->paths;
+	tmp = ft_strjoin(paths->content, "/");
+	fullpath = ft_strjoin(tmp, command);
+	free(tmp);
+	while ((access(fullpath, X_OK) < 0) && paths->next)
+	{
+		free(fullpath);
+		paths = paths->next;
+		tmp = ft_strjoin(paths->content, "/");
+		fullpath = ft_strjoin(tmp, command);
+		free(tmp);
+	}
+	if ((access(fullpath, X_OK) >= 0))
+		return (fullpath);
+	else
+		return (ft_error("A command was not found in env path"), NULL);
+}
+
 void	parse_commands(t_piputils *u, int ac, char **av)
 {
 	int			i;
 	t_command	*cmd;
-	char		*tmp;
+	// char		*tmp;
 
 	i = 2;
 	(void)u;
@@ -38,28 +62,14 @@ void	parse_commands(t_piputils *u, int ac, char **av)
 		cmd = ft_calloc(1, sizeof(t_command));
 		cmd->cmd = first_word(av[i]);
 		cmd->fullpath = get_fullpath(u, cmd->cmd);
-		if (ft_strlen(av[i]) > ft_strlen(cmd->cmd))
-			tmp = ft_strdup(av[i] + 1 + ft_strlen(cmd->cmd));
-		else
-			tmp = ft_strdup("");
+		// if (ft_strlen(av[i]) > ft_strlen(cmd->cmd))
+		// 	tmp = ft_strdup(av[i] + 1 + ft_strlen(cmd->cmd));
+		// else
+		// 	tmp = ft_strdup("");
 		cmd->args = ft_split(av[i], ' ');
-
 		ft_lstadd_back(&u->commands, ft_lstnew(cmd));
 		i++;
 	}
-
-}
-
-
-void	print_cmds(t_command *u)
-{
-	printf("------------------\n");
-	printf("cmd : %s | path : %s\n",u->cmd,u->fullpath);
-	for (size_t i = 0; i < ft_lstlen((const char **)u->args); i++)
-	{
-		printf("arg[%zu] : %s\n",i,u->args[i]);
-	}
-	printf("------------------\n");
 }
 
 void	parse_args(t_piputils *utils, int ac, char **av)
@@ -80,4 +90,26 @@ void	parse_args(t_piputils *utils, int ac, char **av)
 	}
 }
 
+void	parse_path(char **env, t_piputils *utils)
+{
+	char	*tmp;
+	char	**paths;
+	char 	*p_tmp;
 
+	paths = NULL;
+	while (*env)
+	{
+		if (!ft_strncmp(*env, "PATH=", 5))
+		{
+			ft_strlcpy(tmp = ft_calloc(ft_strlen(*env + 5), sizeof(char)),
+				(*env) + 5, ft_strlen(*env + 5));
+			paths = ft_split(tmp, ':');
+			p_tmp = *paths;
+			while (*paths)
+				ft_lstadd_front(&(utils->paths), ft_lstnew(*paths++));
+			free(tmp);
+			// free(p_tmp);
+		}
+		env++;
+	}
+}

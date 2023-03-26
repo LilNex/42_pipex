@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/22 10:19:59 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/19 18:32:10 by ichaiq           ###   ########.fr       */
+/*   Created: 2023/03/05 15:49:07 by ichaiq            #+#    #+#             */
+/*   Updated: 2023/03/23 22:13:10 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_piputils
 	int				outfilefd;
 	char			**cmds;
 	char			**envp;
+	int				*newfd;
 }					t_piputils;
 
 typedef struct s_command
@@ -44,7 +45,7 @@ typedef struct s_command
 }					t_command;
 // t_list *push(t_list **list,int val);
 int		ft_error(char *s);
-void	parsePath(char **env, t_piputils *utils);
+void	parse_path(char **env, t_piputils *utils);
 void	parse_args(t_piputils *utils, int ac, char **av);
 char	*read_file(char *path);
 char	*get_fullpath(t_piputils *u, char *command);
