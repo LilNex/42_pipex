@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 14:29:11 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 23:58:00 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/27 02:03:44 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,5 @@ int	main(int ac, char **av, char **envp)
 	}
 	else
 		ft_error("Pipex needs some minimals args");
-	while (1)
-		;
 	return (0);
 }

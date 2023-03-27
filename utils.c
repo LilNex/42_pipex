@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 23:36:40 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/27 02:05:26 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ void	push_path(char *path, t_piputils *utils)
 void	do_wait(int *first, int *newfd, int *inputfd, int pid)
 {
 	if (*first)
-	{
 		*first = 0;
-		close(*inputfd);
-	}
+	close(*inputfd);
 	close(newfd[1]);
 	*inputfd = newfd[0];
 	waitpid(pid, NULL, 0);

@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/03/15 13:01:45 by ichaiq            #+#    #+#              #
+#    Updated: 2023/03/27 02:04:48 by ichaiq           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 
 NAME = pipex
 HDRS = pipex.h
@@ -11,7 +23,7 @@ OBJECTS = $(SRC:.c=.o)
 CC = cc
 CFLAGS += -Wall -Wextra -Werror
 
-all: $(NAME)
+all: $(NAME) pipex.h
 
 $(LIB):
 	make bonus -C libft 
