@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 21:30:06 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 17:32:50 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/26 23:43:09 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	parse_commands(t_piputils *u, int ac, char **av)
 	(void)u;
 	while (i < ac -1)
 	{
+		if (!*av[i])
+			ft_error("A command is invalid");
 		cmd = ft_calloc(1, sizeof(t_command));
 		cmd->cmd = first_word(av[i]);
 		cmd->fullpath = get_fullpath(u, cmd->cmd);
@@ -90,6 +92,7 @@ void	parse_path(char **env, t_piputils *utils)
 	char	**paths;
 	char	**p_tmp;
 
+	(void) utils;
 	paths = NULL;
 	while (*env)
 	{

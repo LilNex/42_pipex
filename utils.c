@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 17:42:54 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/26 23:36:40 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ void	exec_cmd(int *inputfd, t_list *node, int *first, t_piputils *u)
 	pid = fork();
 	if (pid == 0)
 	{
-		// if (*first)
-		// 	dup2(*inputfd, STDIN_FILENO);
-		// else
 		dup2(*inputfd, STDIN_FILENO);
 		if (node->next)
 			dup2(newfd[1], STDOUT_FILENO);
@@ -55,8 +52,6 @@ void	exec_cmd(int *inputfd, t_list *node, int *first, t_piputils *u)
 			dup2(u->outfilefd, STDOUT_FILENO);
 		execve(((t_command *)node->content)->fullpath,
 			((t_command *)node->content)->args, u->envp);
-		// free(((t_command *)node->content)->fullpath);
-		// free(((t_command *)node->content)->args);
 	}
 	else
 		do_wait(first, newfd, inputfd, pid);

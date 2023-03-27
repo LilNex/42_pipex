@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 15:49:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 16:41:59 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/26 23:03:37 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include<unistd.h>
 # include<limits.h>
 # include "libft/libft.h"
-# include "gnl/get_next_line_bonus.h"
 # include <fcntl.h>
 
 typedef struct s_piputils
