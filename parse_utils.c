@@ -6,24 +6,11 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 21:30:06 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 23:43:09 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/28 23:04:22 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-char	*first_word(char *str)
-{
-	int		i;
-	char	*word;
-
-	i = 0;
-	while (str[i] && str[i] != ' ')
-		i++;
-	word = ft_calloc(i + 1, sizeof(char));
-	ft_strlcpy(word, str, i + 1);
-	return (word);
-}
 
 char	*get_fullpath(t_piputils *u, char *command)
 {
@@ -34,19 +21,35 @@ char	*get_fullpath(t_piputils *u, char *command)
 	paths = u->paths;
 	tmp = ft_strjoin(paths->content, "/");
 	fullpath = ft_strjoin(tmp, command);
-	free(tmp);
+	ft_free(tmp);
 	while ((access(fullpath, X_OK) < 0) && paths->next)
 	{
-		free(fullpath);
+		ft_free(fullpath);
 		paths = paths->next;
 		tmp = ft_strjoin(paths->content, "/");
 		fullpath = ft_strjoin(tmp, command);
-		free(tmp);
+		ft_free(tmp);
 	}
+	ft_free(command);
 	if ((access(fullpath, X_OK) >= 0))
 		return (fullpath);
 	else
 		return (ft_error("A command was not found in env path"), NULL);
+}
+
+void	get_path(t_piputils *u, char *av, t_command *cmd)
+{
+	if ((*av == '.' || *av == '/' ))
+	{
+		cmd->fullpath = first_word(av);
+		if (access(cmd->fullpath, X_OK) < 0)
+			ft_error("The command was not found in path");
+	}
+	else
+	{
+		if (u->paths)
+			cmd->fullpath = get_fullpath(u, first_word(av));
+	}
 }
 
 void	parse_commands(t_piputils *u, int ac, char **av)
@@ -61,8 +64,7 @@ void	parse_commands(t_piputils *u, int ac, char **av)
 		if (!*av[i])
 			ft_error("A command is invalid");
 		cmd = ft_calloc(1, sizeof(t_command));
-		cmd->cmd = first_word(av[i]);
-		cmd->fullpath = get_fullpath(u, cmd->cmd);
+		get_path(u, av[i], cmd);
 		cmd->args = ft_split(av[i], ' ');
 		ft_lstadd_back(&u->commands, ft_lstnew(cmd));
 		i++;
@@ -92,7 +94,6 @@ void	parse_path(char **env, t_piputils *utils)
 	char	**paths;
 	char	**p_tmp;
 
-	(void) utils;
 	paths = NULL;
 	while (*env)
 	{
@@ -104,8 +105,8 @@ void	parse_path(char **env, t_piputils *utils)
 			p_tmp = paths;
 			while (*paths)
 				ft_lstadd_front(&(utils->paths), ft_lstnew(*paths++));
-			free(tmp);
-			free(p_tmp);
+			ft_free(tmp);
+			ft_free(p_tmp);
 		}
 		env++;
 	}

@@ -6,16 +6,15 @@
 #    By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/15 13:01:45 by ichaiq            #+#    #+#              #
-#    Updated: 2023/03/27 02:04:48 by ichaiq           ###   ########.fr        #
+#    Updated: 2023/03/28 13:23:29 by ichaiq           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = pipex
 HDRS = pipex.h
-SOURCES = pipex.c
-LIB= libft/libft.a
-SRC =utils.c file_utils.c parse_utils.c pipex.c 
+LIB = libft/libft.a
+SRC = pipex.c utils.c parse_utils.c 
 	
 
 OBJECTS = $(SRC:.c=.o)

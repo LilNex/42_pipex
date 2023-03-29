@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 15:49:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/26 23:03:37 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/28 23:02:42 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,18 @@ typedef struct s_command
 	char	*fullpath;
 	char	**args;
 }					t_command;
-// t_list *push(t_list **list,int val);
+
+void	ft_cleanexit(t_piputils *u);
 int		ft_error(char *s);
-void	parse_path(char **env, t_piputils *utils);
-void	parse_args(t_piputils *utils, int ac, char **av);
-char	*read_file(char *path);
+char	*first_word(char *str);
+void	get_path(t_piputils *u, char *av, t_command *cmd);
 char	*get_fullpath(t_piputils *u, char *command);
+void	parse_commands(t_piputils *u, int ac, char **av);
+void	parse_args(t_piputils *utils, int ac, char **av);
+void	parse_path(char **env, t_piputils *utils);
+void	push_path(char *path, t_piputils *utils);
+void	do_wait(int *first, int *newfd, int *inputfd, int pid);
+void	exec_cmd(int *inputfd, t_list *node, int *first, t_piputils *u);
 void	execute_commands(t_piputils *u);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 18:55:07 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/27 02:05:26 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/28 23:03:34 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_error(char *s)
 {
-	ft_putstr_fd(s, STDOUT_FILENO);
+	ft_putstr_fd(s, STDERR_FILENO);
 	exit(0);
 }
 
