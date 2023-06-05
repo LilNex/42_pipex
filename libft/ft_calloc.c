@@ -11,6 +11,14 @@
 /* ************************************************************************** */
 #include "libft.h"
 
+int	ft_free(void *p)
+{
+	if (p)
+		return (free(p), (1));
+	else
+		return (0);
+}
+
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;

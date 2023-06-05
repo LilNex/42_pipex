@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 14:29:11 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/28 23:02:39 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/05/25 19:40:58 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,14 @@ void	ft_cleanexit(t_piputils *u)
 	ft_free(u);
 }
 
+void f(){
+	system("leaks pipex");
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_piputils	*utils;
-
+	atexit(f);
 	if (ac >= 5)
 	{
 		utils = (t_piputils *) ft_calloc(1, sizeof(t_piputils));
@@ -62,6 +66,8 @@ int	main(int ac, char **av, char **envp)
 		if (utils->commands)
 			execute_commands(utils);
 		ft_cleanexit(utils);
+		ft_error("fin");
+
 	}
 	else
 		ft_error("Pipex needs some minimals args");

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 21:30:06 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/03/28 23:04:22 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/30 22:19:00 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,15 @@ void	parse_path(char **env, t_piputils *utils)
 	char	*tmp;
 	char	**paths;
 	char	**p_tmp;
+	int		flag;
 
 	paths = NULL;
+	flag = 0;
 	while (*env)
 	{
 		if (!ft_strncmp(*env, "PATH=", 5))
 		{
+			flag = 1;
 			ft_strlcpy(tmp = ft_calloc(ft_strlen(*env + 5), sizeof(char)),
 				(*env) + 5, ft_strlen(*env + 5));
 			paths = ft_split(tmp, ':');
@@ -110,4 +113,6 @@ void	parse_path(char **env, t_piputils *utils)
 		}
 		env++;
 	}
+	if (!flag)
+		ft_error("Env path is invalid");
 }

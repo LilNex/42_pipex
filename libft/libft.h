@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 10:19:59 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/01/12 21:15:34 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/03/28 22:05:47 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int		ft_isprint(int c);
 
 int		ft_issigne(int c);
 int		ft_isnumber(char *c);
+
+int		ft_free(void *p);
 
 size_t	ft_strlen(const char *c);
 size_t	ft_lstlen(const char **c);
